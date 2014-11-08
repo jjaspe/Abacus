@@ -71,10 +71,26 @@ var testUpperFirstIdIsZero = function(el)
 	
   }
   
-  var testColumnLengthIsRight=function(column)
+  var testIsColumnValid=function (column)
+  {
+    if(column>=0 && column<ballsPerRow)
+   		console.log("column is valid test passes");
+	else
+		console.log("column is valid test fails" + column);
+  }
+  
+  var testIsColumnLengthRight=function(column)
   {
     if(column.length===lowerRows)
    		console.log("lower rows column test passes");
 	else
 		console.log("lower rows column test fails" + column.length);
+  }
+  
+  var testIsDefaultTopCorrect=function(image,expected)
+  {
+   	  if(image.defaultTop===expected || image.defaultTop===expected.toString())
+   		console.log("Default top test passes");
+	else
+		console.log("Default top test fails" + image.defaultTop);
   }

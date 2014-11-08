@@ -1,3 +1,75 @@
+//Moves all the ball images down to their natural position
+//Also creates an attribute "defaultTop" so we can keep track of wher the balls should be
+//when they go down
+var moveBallsDown=function()
+{
+    var top=$('.upper').position().top;
+ 	var bottom=top+$('.upper').height();	
+	var ballHeight=$('.col-xs-1').outerHeight(true);
+	var change=0,current=0;
+	
+	//This one has only one row,so just get all divs from that one
+	var row=$('.upper').children('div');
+	testRowsMoreThanZero(row);
+ 	var images=$(row).children('div');
+	testImagesMoreThanZero(images);
+	testImagesRightLength(images,ballsPerRow);
+	
+	//Find how much each image has to move by comparing the bottom of the image
+	//and the bottom of the container. Then move the top of the image by that much
+	//Since all images are at the same height we only need to find the change once
+	
+	current=$(images[0]).position().top+$(images[0]).outerHeight(true);//image's bottom
+	change=bottom-current; //change
+	
+	$.each(images,function(index,value)
+	{	 
+	 $(value).css('position','relative');
+	 $(value).css('top',change);//move image
+	 value.defaultTop=$(value).position().top;
+	 });
+	 
+	 testFirstBallHeight($('.upper'),images[5]);
+	 testIsDefaultTopCorrect(images[0],$(images[0]).position().top);
+	 
+	 top=$('.lower').position().top;
+	 bottom=top+$('.lower').height();	
+	 
+	 //DOnt redeclare in loop
+	 var images = 0;
+	 //Do lower now, since it has several rows, do a .each on the rows, then a .each on the columns
+	 var rows=$('.lower').children('div');
+	 testRowsMoreThanZero(rows);
+	
+	 //Here we need two .each, and since the top row is the first in the .each, we have to do decreaseInChange=rows.length-index-1
+	 //to get the right vertical shift(so the balls at index=0 probably move up since decreaseInChange less than 0,
+	 //while the balls at index =3, move down the maximum change since decreaseInChange=0
+	 $.each(rows,function(index,value)
+    	{	 
+        	images=$(value).children('div');
+        	testImagesMoreThanZero(images);
+    		testImagesRightLength(images,ballsPerRow);
+			
+			//Get change for this row,if this row had to go to the bottom
+    		current=$(images[0]).position().top+$(images[0]).height();//image's bottom
+            change=bottom-current; //change
+				 
+    		//decrease change by rowNumbers*height because this row might not be going to the bottom
+			change-=(rows.length-index-1)*ballHeight;
+			
+    		$.each(images,function(index2,value2)
+        	{            	 
+            	 $(value2).css('position','relative');
+            	 $(value2).css('top',change);//move image
+				 value2.defaultTop=$(value2).position().top;
+        	 });
+			 testIsDefaultTopCorrect(images[0],$(images[0]).position().top);
+    		 
+    	});
+}
+
+
+
 //Handler for clicking on images on the upper part
 //IF it is down, brings it up and viceversa
 var upperImageClick=function()
@@ -24,25 +96,47 @@ var upperImageClick=function()
 //if up, brings it down as well as those below it
 var lowerImageClick=function()
 { 	
-	var imageBottom=$(this).position().top+$(this).height(),
-	containerBottom=$('.upper').position().top+$('.upper').height();
+	//First get the array of all images in the same column as this one
+	var column=getColumnFromImage(this);
+	testIsColumnValid(column);
+	var columnArray=getArrayFromColumn(column);
+	testIsColumnLengthRight(columnArray);
 	
-	if(imageBottom===containerBottom)//It's bottom, move up
+	//Now lets get the actual top, and what the top should be at the bottom
+	var actualTop=$(this).position().top,defaultTop=this.defaultTop;
+	
+	
+	if(actualTop===defaultTop)//It's bottom, move up
 	{
-	   //Make the tops match
-	   var containerTop=$('.upper').position().top,currentTop=$(this).position().top;
-	   $(this).css('top',0);
+	  //Loop through the column array, all the images that have a higher top (so top less than or equal to 
+	  //this one), move them up by lowerMovementDistance, that means we decrease the top by lowerMovementDistance
+	  $.each(columnArray,function(index,value)
+	  {
+          if($(value).position().top<=actualTop)
+		  {
+		      $(this).css('position','relative');
+              $(value).css('top',-lowerMovementDistance);
+		  }
+      }
+       );
 	}else//it's up, move down
 	{
-	 change=containerBottom-imageBottom; //change
-	 $(this).css('position','relative');
-	 $(this).css('top',change);//move image
+	 //Same as before but this time increase top by lowerMovementDistance
+	 $.each(columnArray,function(index,value)
+	  {
+          if($(value).position().top>=actualTop)
+		  {
+		      $(this).css('position','relative');
+              $(value).css('top',lowerMovementDistance);
+			 }
+      }
+       );
 	}
 }  
 
 
 //Given an image with an id, return column number
-var getColFromImage=function(image)
+var getColumnFromImage=function(image)
 {
     var id=$(image).attr('id');
     
@@ -53,7 +147,7 @@ var getColFromImage=function(image)
 
 //Given a column number, return an array with all the images
 //in that column, with the array starting at the top of the column
-var getColumnArray=function(colNumber)
+var getArrayFromColumn=function(colNumber)
 {
  	//We could do this in one line but I want to make sure that
 	//the divs are added to the array in the right order so I 
