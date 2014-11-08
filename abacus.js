@@ -1,23 +1,4 @@
-//Handler for clicking on images on the upper part
-//IF it is down, brings it up and viceversa
-var upperImageClick=function(image,container)
-{
- 	//Is the image down
-	var imageBottom=$(image).position().top+$(image).height(),
-	containerBottom=$(container).position().top+$(container).height();
-	
-	if(imageBottom===containerBottom)//It's bottom, move up
-	{
-	   //Make the tops match
-	   var containerTop=$(container).position().top,currentTop=$(image).position().top;
-	   $(image).css('top',containerTop-currentTop);
-	}else//it's up, move down
-	{
-	 change=containerBottom-imageBottom; //change
-	 $(image).css('position','relative');
-	 $(image).css('top',change);//move image
-	}
-}  
+
 
 /* Gives ids to all divs containing images so we identify them */
 var setUpIds=function()
@@ -31,11 +12,11 @@ var setUpIds=function()
 	$.each(images,function(index,value)
 	{
 	 $(value).attr("id",index);
-	 $(value).click(upperImageClick(value,$('.upper')));
+	 $(value).click(upperImageClick);
 	 });
 	 
 	testUpperFirstIdIsZero(images[0]);
-	testUpperLastIdIsEleven(images[11]);
+	testUpperLastIdIsEleven(images[ballsPerRow-1]);
 	 
 	 //DOnt redeclare in loop
 	 var images = 0;
@@ -47,7 +28,7 @@ var setUpIds=function()
 	{	 
     	images=$(value).children('div');
     	testImagesMoreThanZero(images);
-		testImagesRightLength(images,12);
+		testImagesRightLength(images,ballsPerRow);
 		
 		//index will be rowNumber*rowSize + columnNumber
 		$.each(images,function(index2,value2)
@@ -69,12 +50,12 @@ var moveBallsDown=function()
 	var ballHeight=$('.col-xs-1').outerHeight(true);
 	var change=0,current=0;
 	
-	//This one has only one row,so just get all divs from that
+	//This one has only one row,so just get all divs from that one
 	var row=$('.upper').children('div');
 	testRowsMoreThanZero(row);
  	var images=$(row).children('div');
 	testImagesMoreThanZero(images);
-	testImagesRightLength(images,12);
+	testImagesRightLength(images,ballsPerRow);
 	
 	//Find how much each image has to move by comparing the bottom of the image
 	//and the bottom of the container. Then move the top of the image by that much
@@ -108,7 +89,7 @@ var moveBallsDown=function()
     	{	 
         	images=$(value).children('div');
         	testImagesMoreThanZero(images);
-    		testImagesRightLength(images,12);
+    		testImagesRightLength(images,ballsPerRow);
 			
 			//Get change for this row,if this row had to go to the bottom
     		current=$(images[0]).position().top+$(images[0]).height();//image's bottom
@@ -129,7 +110,12 @@ var moveBallsDown=function()
 var main=function(){
 	setUpIds();	
 	moveBallsDown();
+	var firstColumn=getColumnArray(0);
+	testColumnLengthIsRight(firstColumn);
 }
+
+var ballsPerRow=12;
+var upperRows=1,lowerRows=4;
 	
 $(document).ready(main);
 	

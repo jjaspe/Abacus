@@ -70,3 +70,11 @@ var testUpperFirstIdIsZero = function(el)
 		console.log("First ball Height test fails " + ($(ball).position().top+$(ball).outerHeight(true)));
 	
   }
+  
+  var testColumnLengthIsRight=function(column)
+  {
+    if(column.length===lowerRows)
+   		console.log("lower rows column test passes");
+	else
+		console.log("lower rows column test fails" + column.length);
+  }
