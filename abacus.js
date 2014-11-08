@@ -1,75 +1,23 @@
-  var testUpperFirstIdIsZero = function(el)
-  {
-   	if (el.id==="0")
-  	   console.log( "First Id Test passes");
-  	else
-  		console.log( "First ID Test fails. " + $(el).attr('id'));
-  }
-  
-  var testUpperLastIdIsEleven = function(el)
-  {
-   	if (el.id==="11")
-  	   console.log( "Last Id Test passes");
-  	else
-  		console.log( "Last ID Test fails. " + $(el).attr('id'));
-  }
-  
-  var testLowerFirstIdIs = function(el,value)
-  {
-   	if(el.id===value.toString())
-	  		console.log( "First Id Test passes");
-  	else
-  		console.log( "First ID Test fails. " + $(el).attr('id'));
-  }
-  
-  var testLowerLastIdIs = function(el,value)
-  {
-   	  if(el.id===value.toString())
-	  		console.log( "Last Id Test passes");
-  	else
-  		console.log( "LastID Test fails. " + $(el).attr('id'));
-  }		   	   	   
-  
-  var testImagesMoreThanZero = function(el)
-  {
-   	if (el.length>0)
-  	   console.log( "Images Test passes " + el.length);
-  	else
-  		console.log( "Images Test fails. " );
-  }
-  
-  var testImagesRightLength = function(el,length)
-  {
-   	if (el.length===length)
-  	   console.log( "Images Right length Test passes " );
-  	else
-  		console.log( "Images Right length Test fails. " + el.length);
-  }
-  
-  var testRowsMoreThanZero = function(el)
-  {
-   	if (el.length>0)
-  	   console.log( "Rows Test passes " + el.length);
-  	else
-  		console.log( "Rows Test fails. " );
-  }
-  
-  var testGetInLoopFourTimes = function(times)
-  {
-   if(times===4)
-   				console.log("TImes in loop test passes");
-	else
-		console.log("Times in loop test fails" + times);
+//Handler for clicking on images on the upper part
+//IF it is down, brings it up and viceversa
+var upperImageClick=function(image,container)
+{
+ 	//Is the image down
+	var imageBottom=$(image).position().top+$(image).height(),
+	containerBottom=$(container).position().top+$(container).height();
+	
+	if(imageBottom===containerBottom)//It's bottom, move up
+	{
+	   //Make the tops match
+	   var containerTop=$(container).position().top,currentTop=$(image).position().top;
+	   $(image).css('top',containerTop-currentTop);
+	}else//it's up, move down
+	{
+	 change=containerBottom-imageBottom; //change
+	 $(image).css('position','relative');
+	 $(image).css('top',change);//move image
 	}
-	
-  var testFirstBallHeight=function(parent,ball)
-  {
-   if($(parent).position().top+$(parent).outerHeight(true)===($(ball).position().top+$(ball).outerHeight(true)) )
-   		console.log("First ball Height test passes");
-	else
-		console.log("First ball Height test fails " + ($(ball).position().top+$(ball).outerHeight(true)));
-	
-  }
+}  
 
 /* Gives ids to all divs containing images so we identify them */
 var setUpIds=function()
@@ -82,7 +30,8 @@ var setUpIds=function()
 	
 	$.each(images,function(index,value)
 	{
-	 $(value).attr("id",index);;
+	 $(value).attr("id",index);
+	 $(value).click(upperImageClick(value,$('.upper')));
 	 });
 	 
 	testUpperFirstIdIsZero(images[0]);
@@ -111,27 +60,70 @@ var setUpIds=function()
 	});
 }
 
+
+
 var moveBallsDown=function()
 {
- 	var bottom=$('.upper').position().top+$('.upper').outerHeight(true);
+    var top=$('.upper').position().top;
+ 	var bottom=top+$('.upper').height();	
 	var ballHeight=$('.col-xs-1').outerHeight(true);
+	var change=0,current=0;
 	
-	//This one has only one row,so just get all divs from that;
+	//This one has only one row,so just get all divs from that
 	var row=$('.upper').children('div');
 	testRowsMoreThanZero(row);
  	var images=$(row).children('div');
 	testImagesMoreThanZero(images);
 	testImagesRightLength(images,12);
 	
+	//Find how much each image has to move by comparing the bottom of the image
+	//and the bottom of the container. Then move the top of the image by that much
+	//Since all images are at the same height we only need to find the change once
+	
+	current=$(images[0]).position().top+$(images[0]).outerHeight(true);//image's bottom
+	change=bottom-current; //change
+	
 	$.each(images,function(index,value)
-	{
-	 var left=$(value).position().left;
-	 $(value).css('position','absolute');
-	 $(value).css('top',bottom-ballHeight);
-	 $(value).css('left',left);
+	{	 
+	 $(value).css('position','relative');
+	 $(value).css('top',change);//move image
 	 });
 	 
 	 testFirstBallHeight($('.upper'),images[5]);
+	 
+	 
+	 top=$('.lower').position().top;
+	 bottom=top+$('.lower').height();	
+	 
+	 //DOnt redeclare in loop
+	 var images = 0;
+	 //Do lower now, since it has several rows, do a .each on the rows, then a .each on the columns
+	 var rows=$('.lower').children('div');
+	 testRowsMoreThanZero(rows);
+	
+	 //Here we need two .each, and since the top row is the first in the .each, we have to do decreaseInChange=rows.length-index-1
+	 //to get the right vertical shift(so the balls at index=0 probably move up since decreaseInChange less than 0,
+	 //while the balls at index =3, move down the maximum change since decreaseInChange=0
+	 $.each(rows,function(index,value)
+    	{	 
+        	images=$(value).children('div');
+        	testImagesMoreThanZero(images);
+    		testImagesRightLength(images,12);
+			
+			//Get change for this row,if this row had to go to the bottom
+    		current=$(images[0]).position().top+$(images[0]).height();//image's bottom
+            change=bottom-current; //change
+				 
+    		//decrease change by rowNumbers*height because this row might not be going to the bottom
+			change-=(rows.length-index-1)*ballHeight;
+			
+    		$.each(images,function(index2,value2)
+        	{            	 
+            	 $(value).css('position','relative');
+            	 $(value).css('top',change);//move image
+        	 });
+    		 
+    	});
 }
 
 var main=function(){
