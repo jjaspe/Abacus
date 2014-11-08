@@ -1,15 +1,15 @@
-var moveAbacusParts(){
+var moveAbacusParts=function(){
 	var jumbotronTop=$('.jumbotron').top + "px";
+	
 	$('.upper').css(
 	{
-	 position:"absolute";
-	 top:jumbotronTop;
-	 });	
-}
+	 position:'absolute',
+	 top:jumbotronTop
+	 });
+};
 
 var main=function(){
-	$('.jumbotron').hide();
-	moveAbacusParts();
+	//moveAbacusParts();
 	
 }
 	
