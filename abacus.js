@@ -47,15 +47,10 @@ var setUpIds=function()
 
 
 var main=function(){
-	setUpIds();	
+	setUpIds();		
 	moveBallsDown();
-	//To set up the vertical distance shift, get the first image in the first row and 
-	//get the diference in tops with '.upper'. 
-	var lowerMovementDistance=$(".lower div.row:nth-child(1) div:nth-child(1)").position().top
-	-$('.lower').position().top;
-	console.log(lowerMovementDistance);
-	var firstColumn=getArrayFromColumn(0);
-	testIsColumnLengthRight(firstColumn);
+	
+	
 }
 
 var ballsPerRow=12;
