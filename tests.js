@@ -94,3 +94,19 @@ var testUpperFirstIdIsZero = function(el)
 	else
 		console.log("Default top test fails" + image.defaultTop);
   }
+  
+  var testIsInitialFigureZero=function()
+  {
+   	  if(calculateFigure()===0 )
+   		console.log("Initial figure test passes");
+	else
+		console.log("Initial figure test fails");
+  }
+  
+  var testIsFigureCorrect=function(expected)
+  {
+   	  if(calculateFigure()===expected )
+   		console.log("Initial figure test passes");
+	else
+		console.log("Initial figure test fails");
+  }

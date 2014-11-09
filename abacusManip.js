@@ -26,7 +26,8 @@ var moveBallsDown=function()
 	{	 
 	 $(value).css('top',change);//move image
 	 value.defaultTop=$(value).position().top;
-	 });
+	 $(value).addClass('down');
+	});
 	 
 	 testFirstBallHeight($('.upper'),images[5]);
 	 testIsDefaultTopCorrect(images[0],$(images[0]).position().top);
@@ -64,6 +65,7 @@ var moveBallsDown=function()
 				 value2.topPush=change-$('.lower').innerHeight()+(index+1)*ballHeight+parseInt($('.lower').css('border-top-width'));
             	 $(value2).css('top',value2.bottomPush);
 				 value2.defaultTop=$(value2).position().top;
+				 $(value).addClass('down');
         	 });
 			 testIsDefaultTopCorrect(images[0],$(images[0]).position().top);
     		 
@@ -84,12 +86,17 @@ var upperImageClick=function()
 	   //Make the tops match
 	   var containerTop=$('.upper').position().top,currentTop=$(this).position().top;
 	   $(this).css('top',0);
+	   $(this).removeClass('down');
+	   $(this).addClass('up');
 	}else//it's up, move down
 	{
 	 change=containerBottom-imageBottom; //change
 	 $(this).css('position','relative');
 	 $(this).css('top',change);//move image
+	 $(this).removeClass('up');
+	   $(this).addClass('down');
 	}
+	console.log(calculateFigure());
 }  
 
 
@@ -114,7 +121,11 @@ var lowerImageClick=function()
 	  $.each(columnArray,function(index,value)
 	  {
           if($(value).position().top<=actualTop)
+		  {
               $(value).css('top',value[0].topPush);
+			  $(value).removeClass('down');
+			  $(value).addClass('up');
+		  }
       }
        );
 	}else//it's up, move down
@@ -122,10 +133,15 @@ var lowerImageClick=function()
 	 $.each(columnArray,function(index,value)
 	  {
           if($(value).position().top>=actualTop)
+		  {
 		   	  $(value).css('top',value[0].bottomPush);
+			  $(value).removeClass('up');
+			  $(value).addClass('down');
+		  }
       }
        );
 	}
+	console.log(calculateFigure());
 }  
 
 

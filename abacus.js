@@ -42,6 +42,36 @@ var setUpIds=function()
 	});
 }
 
+//Calculates the number represented in abacus. Each column counts one more decimal point
+var calculateFigure=function()
+{
+ 	var upperRow=$('.upper').children('.row');
+	var figure=0,currentColumnArray,tens=1;
+	for(var i=0;i<ballsPerRow;i++)
+	{
+	 	currentColumnArray=getArrayFromColumn(i);
+		//Walk throuch each of the images in this column, for each one that is up add 10^i (=tens)
+		$.each(currentColumnArray,function(index,value)
+				{
+				 	if($(value).hasClass("up"))
+					   figure+=tens;					
+				});
+		tens=tens*10; 
+	}
+	
+	tens=1;
+	//Walk through top images, for each one that is up add 5*10^i (=5*tens)
+	$.each($('.upper').children('.row').children('.col-xs-1'),
+	function(index,value)
+	{
+		if($(value).hasClass("up"))
+			figure+=5*tens;
+		tens=tens*10; 
+	});	
+	
+	return figure;						
+}
+
 
 
 
@@ -49,7 +79,7 @@ var setUpIds=function()
 var main=function(){
 	setUpIds();		
 	moveBallsDown();
-	
+	testIsInitialFigureZero();
 	
 }
 
