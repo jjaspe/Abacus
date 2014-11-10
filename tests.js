@@ -93,6 +93,7 @@ var testUpperFirstIdIsZero = function(el)
    		console.log("Default top test passes");
 	else
 		console.log("Default top test fails" + image.defaultTop);
+<<<<<<< HEAD
   }
   
   var testIsInitialFigureZero=function()
@@ -117,4 +118,6 @@ var testUpperFirstIdIsZero = function(el)
    		console.log("Initial figure win test passes");
 	else
 		console.log("Initial figure win test fails");
+=======
+>>>>>>> parent of d986ce0... Added figure calculator
   }

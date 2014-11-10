@@ -43,6 +43,7 @@ var setUpIds=function()
 }
 
 
+<<<<<<< HEAD
 //Calculates the number represented in abacus. Each column counts one more decimal point
 var calculateFigure=function()
 {
@@ -86,13 +87,15 @@ var isRight=function()
 		return false;
 		}
 }
+=======
+>>>>>>> parent of d986ce0... Added figure calculator
 
 
 
 var main=function(){
 	setUpIds();		
 	moveBallsDown();
-	testIsInitialFigureZero();
+	
 	
 }
 
