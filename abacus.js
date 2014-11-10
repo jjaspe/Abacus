@@ -42,6 +42,7 @@ var setUpIds=function()
 	});
 }
 
+
 //Calculates the number represented in abacus. Each column counts one more decimal point
 var calculateFigure=function()
 {
@@ -72,7 +73,19 @@ var calculateFigure=function()
 	return figure;						
 }
 
-
+var isRight=function()
+{
+ 	if(figure===calculateFigure())
+	{
+		$('.figure').children('p').css('innerText',"Win");
+		return true;
+		}
+	else
+	{
+		$('.figure').children('p').css('innerText',"Lose");
+		return false;
+		}
+}
 
 
 
@@ -85,7 +98,7 @@ var main=function(){
 
 var ballsPerRow=12;
 var upperRows=1,lowerRows=4;
-var lowerMovementDistance=0;
+var figure=0;
 	
 $(document).ready(main);
 	

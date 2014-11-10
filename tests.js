@@ -110,3 +110,11 @@ var testUpperFirstIdIsZero = function(el)
 	else
 		console.log("Initial figure test fails");
   }
+  
+  var testInitialWinConditionsPass=function()
+  {
+   	  if(isRight())
+   		console.log("Initial figure win test passes");
+	else
+		console.log("Initial figure win test fails");
+  }
