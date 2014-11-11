@@ -3,10 +3,10 @@
 //when they go down
 var moveBallsDown=function()
 {
-    var top=$('.upper').position().top;
- 	var bottom=top+$('.upper').height();	
-	var ballHeight=$('.col-xs-1').height();
-	var change=0,currentBottom=0;
+    var top=$('.upper').position().top,
+	    containerHeight=$('.upper').height(),
+ 		bottom=top+containerHeight,
+		ballHeight=$('.col-xs-1').height();
 	
 	//This one has only one row,so just get all divs from that one
 	var row=$('.upper').children('div');
@@ -17,18 +17,18 @@ var moveBallsDown=function()
 	
 	//Find how much each image has to move by comparing the bottom of the image
 	//and the bottom of the container. Then move the top of the image by that much
-	//Since all images are at the same height we only need to find the change once
-	
-	currentBottom=$(images[0]).position().top+$(images[0]).outerHeight(true);//image's bottom
-	change=bottom-currentBottom; //change
+	//Since all images are at the same height we only need to find the change once	
+	var currentBottom=$(images[0]).position().top+$(images[0]).outerHeight(true);//image's bottom
+	var change=bottom-currentBottom; //difference in bottoms
 	
 	$.each(images,function(index,value)
 	{	 
 	 //Use change to push to bottom of .upper
      value.bottomPush=change;
-	 //Use bottomPush to push to bottom, then subtract heigth of .upper to push to top of upper,then add 
-	 //then add border to move down
-	 value.topPush=value.bottomPush-top+2*parseInt($('.upper').css('border-top-width'));
+	 //Use bottomPush to push to bottom, then subtract heigth of .upper to push to top of upper, 
+	 //then add ballHeight to move down below 'upper',then add border to move down
+	 value.topPush=value.bottomPush-containerHeight+ballHeight+parseInt($('.upper').css('border-top-width'));
+	 $(value).css('position','relative');
 	 $(value).css('top',value.bottomPush);//move image down
 	});
 	 
@@ -67,7 +67,7 @@ var moveBallsDown=function()
 				 //Add width so it ball doesnt cut into border
 				 value2.topPush=change-$('.lower').innerHeight()+(index+1)*ballHeight+parseInt($('.lower').css('border-top-width'));
             	 $(value2).css('top',value2.bottomPush);
-				 value2.defaultTop=$(value2).position().top;
+				 value2.defaultTop=Math.floor($(value2).position().top);
         	 });
 			 testIsDefaultTopCorrect(images[0],$(images[0]).position().top);
     		 
@@ -92,14 +92,16 @@ var reset=function()
 //IF it is down, brings it up and viceversa
 var upperImageClick=function()
 { 	
-	var imageBottom=$(this).position().top+$(this).height(),
+	var imageBottom=Math.floor($(this).position().top+$(this).height()),
 	containerBottom=$('.upper').position().top+$('.upper').height();
 	
 	if(imageBottom===containerBottom)//It's bottom, move up
 	{	   
+	   $(this).css('position','relative');
 	   $(this).css('top',this.topPush);
 	}else//it's up, move down
 	{
+	 $(this).css('position','relative');
 	 $(this).css('top',this.bottomPush);
 	}
 }  
@@ -116,12 +118,9 @@ var lowerImageClick=function()
 	var columnArray=getArrayFromColumn(column);
 	testIsColumnLengthRight(columnArray);
 	
+	var actualTop=Math.floor($(this).position().top);
 	
-	//Now lets get the actual top, and what the top should be at the bottom
-	var actualTop=$(this).position().top,defaultTop=this.defaultTop;
-	
-	
-	if(actualTop===defaultTop)//It's bottom, move up
+	if(actualTop===this.defaultTop)//It's bottom, move up
 	{
 	  $.each(columnArray,function(index,value)
 	  {

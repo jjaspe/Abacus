@@ -76,12 +76,10 @@ var isRight=function()
 {
  	if(figure===calculateFigure())
 	{
-		$('.figure').children('p').css('innerText',"Win");
 		return true;
 		}
 	else
 	{
-		$('.figure').children('p').css('innerText',"Lose");
 		return false;
 		}
 }
@@ -90,7 +88,7 @@ var isRight=function()
 var getNew=function()
 {
  	figure=Math.floor(Math.random()*Math.pow(10,ballsPerRow-1)	+1);
-	$('.figure').text(figure.toString());		 
+	$('.number').text(figure.toString());		 
 }
 
 var main=function(){

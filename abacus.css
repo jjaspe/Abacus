@@ -12,6 +12,11 @@ body {background-color:black; }
  max-height:50px;
  max-width:50px;
   }
+ 
+ .figure .row .col-md-3
+ {
+ display:inline;
+ }
   
  .result{
  font-family:sans-serif;
@@ -35,7 +40,7 @@ body {background-color:black; }
  .abacus {
  position:relative;
  padding-left:100px;
- padding-top:100px;
+ padding-top:20px;
  padding-right:100px;
  border-width:10px;
   }
