@@ -78,12 +78,12 @@ var isRight=function()
 {
  	if(figure===calculateFigure())
 	{
-	    $('.result').text("Correct");
+	    $('.result').text("Correct!");
 		return true;
 		}
 	else
 	{
-	 	$('.result').text("Incorrect");
+	 	$('.result').text("Incorrect. Try Again");
 		return false;
 		}
 }
@@ -92,7 +92,7 @@ var isRight=function()
 //The possible numbers can have as many figures as there are balls in a row
 var getNew=function()
 {
- 	figure=Math.floor(Math.random()*Math.pow(10,ballsPerRow-1)	+1);
+ 	figure=Math.floor(Math.random()*Math.pow(10,ballsPerRow)	+1);
 	$('.number').text(figure.toString());
 	$('.result').text(defaultResultText);		 
 }

@@ -50,20 +50,22 @@ body {background-color:black; }
  padding-left:100px;
  padding-top:20px;
  padding-right:100px;
- border-width:10px;
+ border-width:20px;
+ border-color:green;
   }
   
   .lower .row {
   padding-top:20px;
   padding-bottom:20px;
   padding-left:10px;
-  
+  border-color:brown;
    }
    
    .upper .row {  
    padding-top:20px; 
   padding-bottom:20px;
   padding-left:10px;
+  border-color:brown;
    }
   
   .abacus .upper{
