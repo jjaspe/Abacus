@@ -99,16 +99,17 @@ var testUpperFirstIdIsZero = function(el)
   {
    	  if(calculateFigure()===0 )
    		console.log("Initial figure test passes");
-	else
+	  else
 		console.log("Initial figure test fails");
   }
+  
   
   var testIsFigureCorrect=function(expected)
   {
    	  if(calculateFigure()===expected )
-   		console.log("Initial figure test passes");
+   		console.log("Figure test passes");
 	else
-		console.log("Initial figure test fails");
+		console.log("Figure test fails");
   }
   
   var testInitialWinConditionsPass=function()
@@ -126,3 +127,5 @@ var testUpperFirstIdIsZero = function(el)
 	else
 		console.log("Reset gets all images test fails");
   }
+  
+  

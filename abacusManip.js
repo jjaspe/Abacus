@@ -30,10 +30,9 @@ var moveBallsDown=function()
 	 value.topPush=value.bottomPush-containerHeight+ballHeight+parseInt($('.upper').css('border-top-width'));
 	 $(value).css('position','relative');
 	 $(value).css('top',value.bottomPush);//move image down
+	 $(value).addClass("down");
 	});
 	 
-	 testFirstBallHeight($('.upper'),images[5]);
-	 testIsDefaultTopCorrect(images[0],$(images[0]).position().top);
 	 
 	 top=$('.lower').position().top;
 	 bottom=top+$('.lower').height();	
@@ -68,6 +67,7 @@ var moveBallsDown=function()
 				 value2.topPush=change-$('.lower').innerHeight()+(index+1)*ballHeight+parseInt($('.lower').css('border-top-width'));
             	 $(value2).css('top',value2.bottomPush);
 				 value2.defaultTop=Math.floor($(value2).position().top);
+				 $(value2).addClass("down");				 
         	 });
 			 testIsDefaultTopCorrect(images[0],$(images[0]).position().top);
     		 
@@ -82,6 +82,8 @@ var reset=function()
    $.each(images,function(index,value)
    {
     	$(value).css('top',value.bottomPush);
+		$(value).addClass("down");
+		$(value).removeClass("up");
    });
    
 }
@@ -97,12 +99,14 @@ var upperImageClick=function()
 	
 	if(imageBottom===containerBottom)//It's bottom, move up
 	{	   
-	   $(this).css('position','relative');
 	   $(this).css('top',this.topPush);
+	   $(this).addClass("up");
+	   $(this).removeClass("down");
 	}else//it's up, move down
 	{
-	 $(this).css('position','relative');
 	 $(this).css('top',this.bottomPush);
+	 $(this).addClass("down");
+	 $(this).removeClass("up");
 	}
 }  
 
@@ -125,7 +129,11 @@ var lowerImageClick=function()
 	  $.each(columnArray,function(index,value)
 	  {
           if($(value).position().top<=actualTop)
+		  {
               $(value).css('top',value[0].topPush);
+			  $(value).addClass("up");
+			  $(value).removeClass("down");
+		  }
       }
        );
 	}else//it's up, move down
@@ -133,7 +141,11 @@ var lowerImageClick=function()
 	 $.each(columnArray,function(index,value)
 	  {
           if($(value).position().top>=actualTop)
+		  {
 		   	  $(value).css('top',value[0].bottomPush);
+			  $(value).addClass("down");
+			  $(value).removeClass("up");
+		  }
       }
        );
 	}

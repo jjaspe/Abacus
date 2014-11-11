@@ -43,11 +43,12 @@ var setUpIds=function()
 }
 
 //Calculates the number represented in abacus. Each column counts one more decimal point
+//Decimals start at right and go up by ten to the left
 var calculateFigure=function()
 {
  	var upperRow=$('.upper').children('.row');
 	var figure=0,currentColumnArray,tens=1;
-	for(var i=0;i<ballsPerRow;i++)
+	for(var i=ballsPerRow-1;i>=0;i--)
 	{
 	 	currentColumnArray=getArrayFromColumn(i);
 		//Walk throuch each of the images in this column, for each one that is up add 10^i (=tens)
@@ -61,7 +62,7 @@ var calculateFigure=function()
 	
 	tens=1;
 	//Walk through top images, for each one that is up add 5*10^i (=5*tens)
-	$.each($('.upper').children('.row').children('.col-xs-1'),
+	$.each($('.upper').children('.row').children('.col-xs-1').get().reverse(),
 	function(index,value)
 	{
 		if($(value).hasClass("up"))
@@ -72,33 +73,58 @@ var calculateFigure=function()
 	return figure;						
 }
 
+//Checks if number in abacus is the same as goal number and displays appropriate message
 var isRight=function()
 {
  	if(figure===calculateFigure())
 	{
+	    $('.result').text("Correct");
 		return true;
 		}
 	else
 	{
+	 	$('.result').text("Incorrect");
 		return false;
 		}
 }
 
-
+//Gets a new number to find and resets result text
+//The possible numbers can have as many figures as there are balls in a row
 var getNew=function()
 {
  	figure=Math.floor(Math.random()*Math.pow(10,ballsPerRow-1)	+1);
-	$('.number').text(figure.toString());		 
+	$('.number').text(figure.toString());
+	$('.result').text(defaultResultText);		 
 }
 
 var main=function(){
+    
+    $('.result').text(defaultResultText);
+	getNew();
 	moveBallsDown();
-	setUpIds();		
+	setUpIds();
+}
+
+var test=function()
+{
+ 	switch(testNumber)
+	{
+	 case 0:
+        figure=1;
+    	testIsFigureCorrect(1);
+		break;
+	 case 1:
+	    figure=3;
+    	testIsFigureCorrect(3);
+		break;
+		}
+	testNumber++;
 }
 
 var ballsPerRow=12;
-var upperRows=1,lowerRows=4;
+var upperRows=1,lowerRows=4,testNumber=0;
 var figure=0;
+var defaultResultText="Find the number in abacus";
 	
 $(document).ready(main);
 	

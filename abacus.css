@@ -13,9 +13,17 @@ body {background-color:black; }
  max-width:50px;
   }
  
- .figure .row .col-md-3
+ .test-button
  {
+ display:none; 
+ }
+ 
+ .number-container {
  display:inline;
+ }
+ 
+ .number-container p{
+ display:inline; 
  }
   
  .result{
