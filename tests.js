@@ -118,3 +118,11 @@ var testUpperFirstIdIsZero = function(el)
 	else
 		console.log("Initial figure win test fails");
   }
+  
+  var testResetGetsAllImages=function(images)
+  {
+   	  if(images.length>0)
+   		console.log("Reset gets all images test passes length:" + images.length);
+	else
+		console.log("Reset gets all images test fails");
+  }

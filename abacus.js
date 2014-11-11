@@ -86,10 +86,6 @@ var isRight=function()
 		}
 }
 
-var clear=function()
-{
- 	moveBallsDown();
-}
 
 var getNew=function()
 {
@@ -98,8 +94,8 @@ var getNew=function()
 }
 
 var main=function(){
+	moveBallsDown();
 	setUpIds();		
-	clear();
 }
 
 var ballsPerRow=12;

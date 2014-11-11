@@ -24,9 +24,13 @@ var moveBallsDown=function()
 	
 	$.each(images,function(index,value)
 	{	 
-	 $(value).css('top',change);//move image
-	 value.defaultTop=$(value).position().top;
-	 });
+	 //Use change to push to bottom of .upper
+     value.bottomPush=change;
+	 //Use bottomPush to push to bottom, then subtract heigth of .upper to push to top of upper,then add 
+	 //then add border to move down
+	 value.topPush=value.bottomPush-top+2*parseInt($('.upper').css('border-top-width'));
+	 $(value).css('top',value.bottomPush);//move image down
+	});
 	 
 	 testFirstBallHeight($('.upper'),images[5]);
 	 testIsDefaultTopCorrect(images[0],$(images[0]).position().top);
@@ -44,7 +48,7 @@ var moveBallsDown=function()
 	 //to get the right vertical shift(so the balls at index=0 probably move up since decreaseInChange less than 0,
 	 //while the balls at index =3, move down the maximum change since decreaseInChange=0
 	 $.each(rows,function(index,value)
-    	{	 
+     {	 
         	images=$(value).children('div');
         	testImagesMoreThanZero(images);
     		testImagesRightLength(images,ballsPerRow);
@@ -67,7 +71,19 @@ var moveBallsDown=function()
         	 });
 			 testIsDefaultTopCorrect(images[0],$(images[0]).position().top);
     		 
-    	});
+     });
+}
+
+//Moves all balls down
+var reset=function()
+{ 
+ var images=$('.abacus').children('.upper,.lower').children('.row').children('div');
+ testResetGetsAllImages(images);
+   $.each(images,function(index,value)
+   {
+    	$(value).css('top',value.bottomPush);
+   });
+   
 }
 
 
@@ -80,15 +96,11 @@ var upperImageClick=function()
 	containerBottom=$('.upper').position().top+$('.upper').height();
 	
 	if(imageBottom===containerBottom)//It's bottom, move up
-	{
-	   //Make the tops match
-	   var containerTop=$('.upper').position().top,currentTop=$(this).position().top;
-	   $(this).css('top',0);
+	{	   
+	   $(this).css('top',this.topPush);
 	}else//it's up, move down
 	{
-	 change=containerBottom-imageBottom; //change
-	 $(this).css('position','relative');
-	 $(this).css('top',change);//move image
+	 $(this).css('top',this.bottomPush);
 	}
 }  
 
