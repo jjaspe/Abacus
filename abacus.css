@@ -13,11 +13,32 @@ body {background-color:black; }
  max-width:50px;
   }
   
+ .result{
+ font-family:sans-serif;
+ font-size:20px;
+ color:#fff;
+ left:30px;
+  }
+  
+ .number {
+ font-size:font-family:sans-serif;
+ font-size:20px;
+ color:#fff;
+  }
+ 
+ .number_text {
+ font-family:sans-serif;
+ font-size:20px;
+ color:#fff;
+  }
+  
+  
  .abacus {
  position:relative;
  padding-left:100px;
  padding-top:100px;
  padding-right:100px;
+ border-width:10px;
   }
   
   .lower .row {

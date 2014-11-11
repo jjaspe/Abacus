@@ -86,12 +86,20 @@ var isRight=function()
 		}
 }
 
+var clear=function()
+{
+ 	moveBallsDown();
+}
+
+var getNew=function()
+{
+ 	figure=Math.floor(Math.random()*Math.pow(10,ballsPerRow-1)	+1);
+	$('.figure').text(figure.toString());		 
+}
 
 var main=function(){
 	setUpIds();		
-	moveBallsDown();
-	
-	
+	clear();
 }
 
 var ballsPerRow=12;
