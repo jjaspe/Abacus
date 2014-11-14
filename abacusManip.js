@@ -99,7 +99,7 @@ var upperImageClick=function()
 	
 	if(imageBottom===containerBottom)//It's bottom, move up
 	{	   
-	   $(this).css('top',this.topPush);
+	   $(this).animate({top:this.topPush},1000);
 	   $(this).addClass("up");
 	   $(this).removeClass("down");
 	}else//it's up, move down
