@@ -99,12 +99,12 @@ var upperImageClick=function()
 	
 	if(imageBottom===containerBottom)//It's bottom, move up
 	{	   
-	   $(this).css('top',this.topPush);
+	   $(this).animate({top:this.topPush},500);
 	   $(this).addClass("up");
 	   $(this).removeClass("down");
 	}else//it's up, move down
 	{
-	 $(this).css('top',this.bottomPush);
+	 $(this).animate({top:this.bottomPush},500);
 	 $(this).addClass("down");
 	 $(this).removeClass("up");
 	}
@@ -130,7 +130,7 @@ var lowerImageClick=function()
 	  {
           if($(value).position().top<=actualTop)
 		  {
-              $(value).css('top',value[0].topPush);
+              $(value).animate({top:value[0].topPush},500);
 			  $(value).addClass("up");
 			  $(value).removeClass("down");
 		  }
@@ -142,7 +142,7 @@ var lowerImageClick=function()
 	  {
           if($(value).position().top>=actualTop)
 		  {
-		   	  $(value).css('top',value[0].bottomPush);
+		   	  $(value).animate({top:value[0].bottomPush},500);
 			  $(value).addClass("down");
 			  $(value).removeClass("up");
 		  }
